@@ -12,10 +12,10 @@ help: ## Show this help message
 start: ## Start the containers
 	docker network create modular-monolith-example-network || true
 	cp -n docker-compose.yml.dist docker-compose.yml || true
-	U_ID=${UID} docker-compose up -d
+	U_ID=${UID} docker compose up -d
 
 stop: ## Stop the containers
-	U_ID=${UID} docker-compose stop
+	U_ID=${UID} docker compose stop
 
 restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) start
@@ -23,7 +23,7 @@ restart: ## Restart the containers
 build: ## Rebuilds all the containers
 	docker network create modular-monolith-example-network || true
 	cp -n docker-compose.yml.dist docker-compose.yml || true
-	U_ID=${UID} docker-compose build
+	U_ID=${UID} docker compose build
 
 prepare: ## Runs backend commands
 	$(MAKE) composer-install
@@ -31,7 +31,7 @@ prepare: ## Runs backend commands
 	$(MAKE) migrations-test
 
 run: ## starts the Symfony development server in detached mode
-	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} symfony serve -d
+	U_ID=${UID} docker exec -it --user root ${DOCKER_BE} symfony serve -d
 
 logs: ## Show Symfony logs in real time
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} symfony server:log
